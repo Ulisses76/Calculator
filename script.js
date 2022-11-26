@@ -51,6 +51,7 @@ function clear() {
 
 function back() {
   let backed = document.querySelector('.temp').textContent;
+  if (!backed) return;
   backed = backed.slice(0,backed.length-1);
   backed = backed=="" ? "0" : backed;
   document.querySelector('.temp').textContent=backed;
@@ -82,51 +83,69 @@ function multiply (number1,number2) {
   return; 
 };
 
-
-
-function equal() {
-  let number1=document.querySelector('.number').textContent;
-  let number2=document.querySelector('.temp').textContent;
+function computate() {
+  let number1=document.querySelector('.number');
+  let number2=document.querySelector('.temp');
   let operator=document.querySelector('.operator');
 
-  if (number1.textContent=="" || operator.textContent=="") {
-    return;
-  }
   if (operator.textContent=="add") {
-    add(number1,number2);
+    add(number1.textContent,number2.textContent);
   }
   if (operator.textContent=="subtract") {
-    subtract(number1,number2);
+    subtract(number1.textContent,number2.textContent);
   }
   if (operator.textContent=="divide") {
-    divide(number1,number2);
+    divide(number1.textContent,number2.textContent);
   }
   if (operator.textContent=="multiply") {
-    multiply(number1,number2);
+    multiply(number1.textContent,number2.textContent);
   }
-  let result=document.querySelector('.result');
+}
+
+function equal() {
+  let number1=document.querySelector('.number');
+  let number2=document.querySelector('.temp');
+  let operator=document.querySelector('.operator');
+  let result=document.querySelector('.result'); 
+  if (!number1.textContent || !operator.textContent || !number2.textContent) {
+
+    return;
+  }
+  computate();
+  
   if (result.textContent.includes(".")){
     result.textContent=parseFloat(result.textContent).toFixed(2).toString();
   }
   popDisplay(result.textContent);
+  operator.textContent="";
+  number1.textContent="";
+  number2.textContent="";
   return;
 }
 
-function operate(){
+function operate() {
   let operator=document.querySelector('.operator');
   let temp=document.querySelector('.temp');
   let number=document.querySelector('.number');
   let result=document.querySelector('.result');
-  if (!result.textContent==""){
-    number.textContent=result.textContent
-    } else { number.textContent=temp.textContent};
-  if (!operator.textContent=="") {
-
-  }
-  operator.textContent=button.className;
+  if (result.textContent){
+    number.textContent=result.textContent;
+    result.textContent="";
+    temp.textContent="";
+    return; 
+    }
+  if (operator.textContent) {
+    computate();
+    popDisplay(result.textContent);
+    number.textContent=result.textContent;
+    temp.textContent="";
+    return;   
+    ;}
+  number.textContent=temp.textContent;
   temp.textContent="";
-
+  
 }
+
 const buttons=document.querySelectorAll('button');
 buttons.forEach((button) => {
   button.addEventListener('click',() => {
@@ -144,8 +163,9 @@ buttons.forEach((button) => {
     if (typed=="=") {
       equal();
     }
-    if (typed=="/" || typed=="+" || typed=="-" || typed=="x") {
-     operate();
+    if (typed=="/" || typed=="+" || typed=="-" || typed=="x") {    
+      operate();
+     operator.textContent=button.className;
     }
   })
 })
