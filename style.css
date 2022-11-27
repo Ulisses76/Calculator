@@ -80,6 +80,6 @@ button {
   background-color: greenyellow;
   left: 0;
 }
-.result,.number,.temp,.operator {
+.typed,.memory,.operator {
   display: none;
 }

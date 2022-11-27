@@ -1,18 +1,19 @@
-const result = document.createElement("div");
-const number = document.createElement('div');
-const temp = document.createElement('div');
-const operator = document.createElement('div');
+const memo = document.createElement("div");
+const type = document.createElement('div');
+const operat = document.createElement('div');
 
-operator.classList.add('operator')
-result.classList.add("result");
-number.classList.add('number');
-temp.classList.add('temp');
+operat.classList.add('operator')
+memo.classList.add("memory");
+type.classList.add('typed');
 
 const container=document.querySelector(".container");
-container.appendChild(result);
-container.appendChild(number);
-container.appendChild(temp);
-container.appendChild(operator);
+container.appendChild(memo);
+container.appendChild(type);
+container.appendChild(operat);
+
+let memory = document.querySelector('.memory');
+let typed = document.querySelector('.typed');
+let operator = document.querySelector('.operator');
 
 popDisplay("0");
 
@@ -23,152 +24,140 @@ function popDisplay(string) {
   return;
 }
 
-function numberEntry(typed) {
-  let typedWindow = document.querySelector("div.temp").textContent;
+function numberEntry(string) {
+  let typedWindow = typed.textContent;
+  
   if (typedWindow=="0"){
     typedWindow="";
   }
   if (typedWindow.length>=14) {
     return;
   }
-  if (typed=="." && typedWindow.includes(".")) {
+  if (string=="." && typedWindow.includes(".")) {
     return;
   }
-  typedWindow+=typed;
-  document.querySelector(".temp").textContent=typedWindow;
+  typedWindow+=string;
+  typed.textContent=typedWindow;
   popDisplay(typedWindow);
   return;
 }
 
 function clear() {
-  document.querySelector('.result').textContent="";
-  document.querySelector('.number').textContent="";
-  document.querySelector('.temp').textContent="";
-  document.querySelector('.operator').textContent="";
+  memory.textContent="";
+  typed.textContent="";
+  operator.textContent="";
   popDisplay("0");
   return;
 }
 
 function back() {
-  let backed = document.querySelector('.temp').textContent;
+  let backed = typed.textContent;
   if (!backed) return;
   backed = backed.slice(0,backed.length-1);
   backed = backed=="" ? "0" : backed;
-  document.querySelector('.temp').textContent=backed;
+  typed.textContent=backed;
   popDisplay(backed);
   return;
 }
 
 function add(number1,number2) {
   let sum = parseFloat(number1)+parseFloat(number2);
-  document.querySelector('.result').textContent=sum.toString();
+  memory.textContent=sum.toString();
   return;
 }
 function subtract(number1,number2) {
   let minus =parseFloat(number1)-parseFloat(number2);
-  document.querySelector('.result').textContent=minus.toString();
+  memory.textContent=minus.toString();
   return };
 function divide (number1,number2) {
   if (parseFloat(number2)==0) {
-    document.querySelector('.result').textContent="ERROR!!";
+    memory.textContent="ERROR!!";
     return;
   }
   let divide=parseFloat(number1)/parseFloat(number2);
-  document.querySelector('.result').textContent=divide.toString();
+  memory.textContent=divide.toString();
     return; 
 };
 function multiply (number1,number2) {
   let multiply=parseFloat(number1)*parseFloat(number2);
-  document.querySelector('.result').textContent=multiply.toString();
+  memory.textContent=multiply.toString();
   return; 
 };
 
 function computate() {
-  let number1=document.querySelector('.number');
-  let number2=document.querySelector('.temp');
-  let operator=document.querySelector('.operator');
-
+ 
   if (operator.textContent=="add") {
-    add(number1.textContent,number2.textContent);
+    add(memory.textContent,typed.textContent);
   }
   if (operator.textContent=="subtract") {
-    subtract(number1.textContent,number2.textContent);
+    subtract(memory.textContent,typed.textContent);
   }
   if (operator.textContent=="divide") {
-    divide(number1.textContent,number2.textContent);
+    divide(memory.textContent,typed.textContent);
   }
   if (operator.textContent=="multiply") {
-    multiply(number1.textContent,number2.textContent);
+    multiply(memory.textContent,typed.textContent);
   }
 }
 
 function equal() {
-  let number1=document.querySelector('.number');
-  let number2=document.querySelector('.temp');
-  let operator=document.querySelector('.operator');
-  let result=document.querySelector('.result'); 
-  if (!number1.textContent || !operator.textContent || !number2.textContent) {
+ 
+  if (!memory.textContent || !operator.textContent || !typed.textContent) {
 
     return;
   }
   computate();
   
-  if (result.textContent.includes(".")){
-    result.textContent=parseFloat(result.textContent).toFixed(2).toString();
+  if (memory.textContent.includes(".")){
+    memory.textContent=parseFloat(memory.textContent).toFixed(2).toString();
   }
-  popDisplay(result.textContent);
+  popDisplay(memory.textContent);
   operator.textContent="";
-  number1.textContent="";
-  number2.textContent="";
+  typed.textContent="";
   return;
-}
-
-function operate() {
-  let operator=document.querySelector('.operator');
-  let temp=document.querySelector('.temp');
-  let number=document.querySelector('.number');
-  let result=document.querySelector('.result');
-  if (result.textContent){
-    number.textContent=result.textContent;
-    result.textContent="";
-    temp.textContent="";
-    return; 
-    }
-  if (operator.textContent) {
-    computate();
-    popDisplay(result.textContent);
-    number.textContent=result.textContent;
-    temp.textContent="";
-    return;   
-    ;}
-  number.textContent=temp.textContent;
-  temp.textContent="";
-  
 }
 
 const buttons=document.querySelectorAll('button');
 buttons.forEach((button) => {
   button.addEventListener('click',() => {
-    const typed=button.textContent;
+    const type=button.textContent;
    
-   if ((typed>="0" && typed <="9")||typed==".") {
-      numberEntry(typed);
+   if ((type>="0" && type <="9")||type==".") {
+    if (!operator.textContent) {
+      memory.textContent="";
     }
-    if (typed=="clear") {
+      numberEntry(type);
+    }
+    if (type=="clear") {
       clear();
     }
-    if (typed=="←") {
+    if (type=="←") {
       back();
     }
-    if (typed=="=") {
+    if (type=="=") {
       equal();
     }
-    if (typed=="/" || typed=="+" || typed=="-" || typed=="x") {    
-      operate();
-     operator.textContent=button.className;
+    if (type=="/" || type=="+" || type=="-" || type=="x") {
+
+      if (memory.textContent && typed.textContent) {
+        computate();
+        popDisplay(memory.textContent);
+        typed.textContent="";
+        return;
+      }      
+      if (memory.textContent && !typed.textContent) {
+        operator.textContent=button.className;
+        return;
+      }
+      
+      memory.textContent=typed.textContent;
+      typed.textContent="";
+      operator.textContent=button.className;
     }
+    
   })
-})
+});
+
 
 
 
