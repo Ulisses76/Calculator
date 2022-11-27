@@ -17,7 +17,7 @@ let operator = document.querySelector('.operator');
 
 popDisplay("0");
 
-// coloca o conteudo do resultado na tela //
+
 function popDisplay(string) {
   const display=document.querySelector("div.display");
   if (string.length>14) {
@@ -105,31 +105,27 @@ function computate() {
   if (operator.textContent=="multiply") {
     multiply(memory.textContent,typed.textContent);
   }
+  if (memory.textContent.includes(".")){
+    memory.textContent=parseFloat(memory.textContent).toFixed(2).toString();
+  };
 }
 
-function equal() {
- 
+function equal() { 
   if (!memory.textContent || !operator.textContent || !typed.textContent) {
 
     return;
   }
   computate();
   if (!memory.textContent) { return};
-  if (memory.textContent.includes(".")){
-    memory.textContent=parseFloat(memory.textContent).toFixed(2).toString();
-  };
+  
   popDisplay(memory.textContent);
   operator.textContent="";
   typed.textContent="";
   return;
 }
 
-const buttons=document.querySelectorAll('button');
-buttons.forEach((button) => {
-  button.addEventListener('click',() => {
-    const type=button.textContent;
-   
-   if ((type>="0" && type <="9")||type==".") {
+function typing(type,opera) {
+  if ((type>="0" && type <="9")||type==".") {
     if (!operator.textContent) {
       memory.textContent="";
     }
@@ -153,24 +149,29 @@ buttons.forEach((button) => {
       }
       if (memory.textContent && typed.textContent) {
         computate();
+        if(!memory.textContent) {
+          operator.textContent="";
+          return;
+        }
         popDisplay(memory.textContent);
         typed.textContent="";
-        operator.textContent=button.className;
+        operator.textContent=opera;
         return;
       }      
       if (memory.textContent && !typed.textContent) {
-        operator.textContent=button.className;
+        operator.textContent=opera;
         return;
       }
-      
       memory.textContent=typed.textContent;
       typed.textContent="";
-      operator.textContent=button.className;
+      operator.textContent=opera;
     }
-    
-  })
+}
+
+const buttons=document.querySelectorAll('button');
+buttons.forEach((button) => {
+  button.addEventListener('click',() => {
+    typing(button.textContent,button.className);
+  
+})
 });
-
-
-
-
