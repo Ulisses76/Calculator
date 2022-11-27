@@ -20,7 +20,12 @@ popDisplay("0");
 // coloca o conteudo do resultado na tela //
 function popDisplay(string) {
   const display=document.querySelector("div.display");
-  display.textContent=string;
+  if (string.length>14) {
+    display.textContent="Too Large!";
+    memory.textContent="";
+    typed.textContent="";
+  } else {
+  display.textContent=string;}
   return;
 }
 
@@ -71,7 +76,9 @@ function subtract(number1,number2) {
   return };
 function divide (number1,number2) {
   if (parseFloat(number2)==0) {
-    memory.textContent="ERROR!!";
+    popDisplay("ERROR!!");
+    memory.textContent="";
+    typed.textContent="";
     return;
   }
   let divide=parseFloat(number1)/parseFloat(number2);
@@ -107,10 +114,10 @@ function equal() {
     return;
   }
   computate();
-  
+  if (!memory.textContent) { return};
   if (memory.textContent.includes(".")){
     memory.textContent=parseFloat(memory.textContent).toFixed(2).toString();
-  }
+  };
   popDisplay(memory.textContent);
   operator.textContent="";
   typed.textContent="";
