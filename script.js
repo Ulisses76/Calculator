@@ -145,11 +145,17 @@ buttons.forEach((button) => {
       equal();
     }
     if (type=="/" || type=="+" || type=="-" || type=="x") {
-
+      if (typed.textContent=="-") { return};
+      if (type=="-" && !typed.textContent) {
+        typed.textContent="-";
+        popDisplay('-');
+        return;
+      }
       if (memory.textContent && typed.textContent) {
         computate();
         popDisplay(memory.textContent);
         typed.textContent="";
+        operator.textContent=button.className;
         return;
       }      
       if (memory.textContent && !typed.textContent) {
