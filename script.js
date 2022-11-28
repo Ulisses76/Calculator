@@ -175,3 +175,30 @@ buttons.forEach((button) => {
   
 })
 });
+
+const keypress=window.addEventListener('keydown',(key) => {
+  let type,opera;
+  if (key.key>="0" && key.key<="9" || key.key===".") type=key.key;
+  if (key.key ==="-" ) {
+    type=key.key;
+    opera="subtract";
+  }
+  if (key.key==="+") {
+    type=key.key;
+    opera="add"; 
+  }
+  if (key.key==="/") {
+    type=key.key;
+    opera="divide"
+  }
+  if (key.key==="*") {
+    type="x";
+    opera="multiply";
+  }
+  if (key.key==="Delete") type="clear";
+  if (key.key==="Backspace") type="←";
+  if (key.key==="=") type="=";
+  if (!type && !opera) return;
+  typing(type,opera);
+
+})
