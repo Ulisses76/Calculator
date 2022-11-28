@@ -91,6 +91,27 @@ function multiply (number1,number2) {
   return; 
 };
 
+function pointString () {
+let string=memory.textContent;
+let stringArray=string.split('.');
+if (stringArray[0].length>14) {
+  string=stringArray[0];
+  return;
+}
+
+let mountString=stringArray[0]+"."+stringArray[1];
+if (mountString.length>14) {
+  mountString=parseFloat(mountString).toFixed(13-stringArray[0].length);
+}
+for (let i=mountString.length-1; i>=0; i--) {
+  if (mountString[i]==="0") {
+    mountString=mountString.slice(-1);
+    return;
+  } else {break}
+}
+memory.textContent=mountString;
+}
+
 function computate() {
  
   if (operator.textContent=="add") {
@@ -105,9 +126,7 @@ function computate() {
   if (operator.textContent=="multiply") {
     multiply(memory.textContent,typed.textContent);
   }
-  if (memory.textContent.includes(".")){
-    memory.textContent=parseFloat(memory.textContent).toFixed(2).toString();
-  };
+  if (memory.textContent.includes(".")) pointString();
 }
 
 function equal() { 
