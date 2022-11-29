@@ -17,7 +17,6 @@ let operator = document.querySelector('.operator');
 
 popDisplay("0");
 
-
 function popDisplay(string) {
   const display=document.querySelector("div.display");
   if (string.length>14) {
@@ -30,8 +29,7 @@ function popDisplay(string) {
 }
 
 function numberEntry(string) {
-  let typedWindow = typed.textContent;
-  
+  let typedWindow = typed.textContent;  
   if (typedWindow=="0"){
     typedWindow="";
   }
@@ -70,10 +68,12 @@ function add(number1,number2) {
   memory.textContent=sum.toString();
   return;
 }
+
 function subtract(number1,number2) {
   let minus =parseFloat(number1)-parseFloat(number2);
   memory.textContent=minus.toString();
   return };
+
 function divide (number1,number2) {
   if (parseFloat(number2)==0) {
     popDisplay("ERROR!!");
@@ -85,6 +85,7 @@ function divide (number1,number2) {
   memory.textContent=divide.toString();
     return; 
 };
+
 function multiply (number1,number2) {
   let multiply=parseFloat(number1)*parseFloat(number2);
   memory.textContent=multiply.toString();
@@ -98,22 +99,15 @@ if (stringArray[0].length>14) {
   string=stringArray[0];
   return;
 }
-
 let mountString=stringArray[0]+"."+stringArray[1];
 if (mountString.length>14) {
   mountString=parseFloat(mountString).toFixed(13-stringArray[0].length);
 }
-for (let i=mountString.length-1; i>=0; i--) {
-  if (mountString[i]==="0") {
-    mountString=mountString.slice(-1);
-    return;
-  } else {break}
-}
+mountString=mountString.replaceAll("0"," ").trimEnd();
 memory.textContent=mountString;
 }
 
-function computate() {
- 
+function computate() { 
   if (operator.textContent=="add") {
     add(memory.textContent,typed.textContent);
   }
@@ -130,13 +124,9 @@ function computate() {
 }
 
 function equal() { 
-  if (!memory.textContent || !operator.textContent || !typed.textContent) {
-
-    return;
-  }
+  if (!memory.textContent || !operator.textContent || !typed.textContent) return;
   computate();
-  if (!memory.textContent) { return};
-  
+  if (!memory.textContent) { return};  
   popDisplay(memory.textContent);
   operator.textContent="";
   typed.textContent="";
@@ -190,8 +180,7 @@ function typing(type,opera) {
 const buttons=document.querySelectorAll('button');
 buttons.forEach((button) => {
   button.addEventListener('click',() => {
-    typing(button.textContent,button.className);
-  
+    typing(button.textContent,button.className);  
 })
 });
 
