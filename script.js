@@ -103,7 +103,7 @@ let mountString=stringArray[0]+"."+stringArray[1];
 if (mountString.length>14) {
   mountString=parseFloat(mountString).toFixed(13-stringArray[0].length);
 }
-mountString=mountString.replaceAll("0"," ").trimEnd();
+mountString=mountString.replaceAll("0"," ").trimEnd().replaceAll(" ","0");
 memory.textContent=mountString;
 }
 
